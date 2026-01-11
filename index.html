@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shraddha Scholars | Elite Coaching Institute, Nashik</title>
+  <style>
+    :root {
+      --navy: #0b1f3a;
+      --white: #ffffff;
+      --light: #f4f6f9;
+      --accent: #c9a23f;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--white);
+      color: #222;
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--navy);
+      color: var(--white);
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.6rem;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: var(--white);
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      background: linear-gradient(rgba(11,31,58,0.85), rgba(11,31,58,0.85)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1');
+      background-size: cover;
+      background-position: center;
+      color: var(--white);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 2.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      max-width: 900px;
+      margin: 0 auto 2rem;
+      font-size: 1.15rem;
+    }
+
+    .cta-btn {
+      background: var(--accent);
+      color: var(--navy);
+      padding: 0.9rem 2rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    section {
+      padding: 4rem 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    section h3 {
+      color: var(--navy);
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      text-align: center;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: var(--light);
+      padding: 2rem;
+      border-radius: 6px;
+    }
+
+    .card h4 {
+      color: var(--navy);
+      margin-bottom: 0.6rem;
+    }
+
+    .founder {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .founder h3 {
+      color: var(--white);
+    }
+
+    .founder p {
+      max-width: 900px;
+      margin: auto;
+      font-size: 1.05rem;
+    }
+
+    .details {
+      background: var(--light);
+    }
+
+    footer {
+      background: var(--navy);
+      color: var(--white);
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+    }
+
+    footer p {
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+      .hero h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Shraddha Scholars</h1>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#programs">Programs</a>
+      <a href="#founder">Founder</a>
+      <a href="#support">Support</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Shaping Mathematical Minds. Building Competitive Excellence.</h2>
+    <p>
+      Shraddha Scholars is an elite coaching institute in Nashik specializing in Mathematics and Mental Ability, 
+      dedicated to Olympiad success (IOQM, NMTC) along with systematic CBSE and ICSE board preparation.
+    </p>
+    <button class="cta-btn">Register Early – Limited Seats Available</button>
+  </section>
+
+  <section id="about">
+    <h3>Why Shraddha Scholars?</h3>
+    <div class="two-col">
+      <div class="card">
+        <h4>Student-Centric Learning</h4>
+        <p>
+          Every student receives personalized attention in a focused environment that nurtures curiosity, 
+          clarity of concepts, and long-term academic confidence.
+        </p>
+      </div>
+      <div class="card">
+        <h4>Structured Academic Growth</h4>
+        <p>
+          With systematic schedules, comprehensive study material, and strategic growth mapping, 
+          students progress with clarity and measurable outcomes.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="programs">
+    <h3>Academic Programs</h3>
+    <div class="two-col">
+      <div class="card">
+        <h4>Olympiad Preparation</h4>
+        <p>
+          Specialized coaching for IOQM and NMTC with emphasis on logical reasoning, problem-solving depth, 
+          and advanced mathematical thinking.
+        </p>
+      </div>
+      <div class="card">
+        <h4>Board Excellence</h4>
+        <p>
+          Strong foundation and exam-oriented preparation for CBSE and ICSE students, ensuring conceptual mastery 
+          and consistent performance.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="founder" class="founder">
+    <h3>About the Founder</h3>
+    <p>
+      Led by <strong>Shraddha Dwivedi</strong>, Shraddha Scholars is guided by over 13 years of rich teaching experience 
+      at premier institutes such as Allen and FIITJEE. Known for her mentorship-driven approach, she believes in 
+      understanding each student’s learning style and guiding them with precision, patience, and purpose.
+      
+      Her expertise lies not just in teaching mathematics, but in shaping disciplined thinkers who excel in 
+      competitive environments while staying grounded in strong academic fundamentals.
+    </p>
+  </section>
+
+  <section id="support" class="details">
+    <h3>Student Support & Resources</h3>
+    <div class="two-col">
+      <div class="card">
+        <h4>Academic Support</h4>
+        <ul>
+          <li>Well-curated study material</li>
+          <li>Regular mock tests & performance analysis</li>
+          <li>Access to reference books & library resources</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4>Guidance & Counseling</h4>
+        <ul>
+          <li>One-on-one mentoring sessions</li>
+          <li>Strategic academic counseling</li>
+          <li>Progress tracking & feedback</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h3>Visit Us</h3>
+    <div class="card">
+      <p><strong>Address:</strong> Shop No. 2, Sai Vishva Apartment, Anandvalli, Serene Meadows, Nashik</p>
+      <p><strong>Schedule:</strong> Monday to Saturday</p>
+      <p><strong>Timings:</strong> 4:00 PM – 7:00 PM</p>
+      <p><strong>Contact:</strong>+91 89287 27515 </p>
+    </div>
+  </section>
+
+  <section id="register" class="details">
+  <h3>Student Enquiry</h3>
+
+  <div class="card">
+    <form id="enquiryForm">
+
+      <input type="text" id="name" placeholder="Student Name" required
+        style="width:100%;padding:10px;margin-bottom:10px;">
+
+      <input type="text" id="class" placeholder="Class" required
+        style="width:100%;padding:10px;margin-bottom:10px;">
+
+      <input type="text" id="school" placeholder="School"
+        style="width:100%;padding:10px;margin-bottom:10px;">
+
+      <input type="tel" id="phone" placeholder="Phone Number" required
+        style="width:100%;padding:10px;margin-bottom:10px;">
+
+      <input type="text" id="course"
+        placeholder="Course (IOQM / NMTC / CBSE / ICSE)"
+        style="width:100%;padding:10px;margin-bottom:15px;">
+
+      <button type="submit" class="cta-btn">
+        Submit Enquiry
+      </button>
+    </form>
+
+    <p id="formMsg" style="margin-top:15px;font-weight:bold;"></p>
+  </div>
+</section>
+
+  <footer>
+    <p><strong>Shraddha Scholars</strong> – A Premium Learning Hub for Nashik</p>
+    <p>Early registration is strongly recommended due to limited seats.</p>
+  </footer>
+  
+<script>
+  const form = document.getElementById("enquiryForm");
+  const msg = document.getElementById("formMsg");
+
+  console.log("Form loaded:", form);
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    console.log("FORM SUBMITTED");
+
+    msg.innerText = "Submitting...";
+    msg.style.color = "black";
+
+    const data = {
+      name: document.getElementById("name").value,
+      class: document.getElementById("class").value,
+      school: document.getElementById("school").value,
+      phone: document.getElementById("phone").value,
+      course: document.getElementById("course").value
+    };
+
+    try {
+      const response = await fetch("http://localhost:5000/api/enquiry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      msg.style.color = "green";
+      msg.innerText = result.message || "Enquiry submitted successfully!";
+      form.reset();
+
+    } catch (err) {
+      console.error("SUBMIT ERROR:", err);
+      msg.style.color = "red";
+      msg.innerText = "Submission failed. Please try again.";
+    }
+  });
+</script>
+
+</body>
+</html>

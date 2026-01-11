@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shraddha Scholars – Admin</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      padding: 2rem;
+    }
+    h2 {
+      color: #0b1f3a;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      background: white;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background: #0b1f3a;
+      color: white;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Admin Dashboard – Shraddha Scholars</h2>
+
+  <input type="password" id="adminPass" placeholder="Enter admin password">
+  <button onclick="loadData()">Load Enquiries</button>
+
+  <p class="error" id="errorMsg"></p>
+
+  <table id="dataTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Class</th>
+        <th>School</th>
+        <th>Phone</th>
+        <th>Course</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <script>
+    async function loadData() {
+      const pass = document.getElementById("adminPass").value;
+      const errorMsg = document.getElementById("errorMsg");
+      const table = document.getElementById("dataTable");
+      const body = document.getElementById("tableBody");
+
+      errorMsg.innerText = "";
+      body.innerHTML = "";
+
+      try {
+        const res = await fetch("http://localhost:5000/api/enquiry", {
+          headers: {
+            "x-admin-password": pass
+          }
+        });
+
+        if (!res.ok) {
+          throw new Error("Unauthorized");
+        }
+
+        const data = await res.json();
+        table.style.display = "table";
+
+        data.forEach(e => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${e.name}</td>
+            <td>${e.class}</td>
+            <td>${e.school || "-"}</td>
+            <td>${e.phone}</td>
+            <td>${e.course || "-"}</td>
+            <td>${new Date(e.createdAt).toLocaleString()}</td>
+          `;
+          body.appendChild(row);
+        });
+
+      } catch (err) {
+        table.style.display = "none";
+        errorMsg.innerText = "Wrong password or server error.";
+      }
+    }
+  </script>
+
+</body>
+</html>
