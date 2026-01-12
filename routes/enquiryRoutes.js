@@ -1,74 +1,51 @@
 import express from "express";
 import Enquiry from "../models/Enquiry.js";
 
-export default function enquiryRoutes(transporter) {
-  const router = express.Router();
+const router = express.Router();
 
-  // ============================
-  // POST – public (students)
-  // ============================
-  router.post("/", async (req, res) => {
-    console.log("📩 New enquiry:", req.body);
+/* ---------------- POST (students) ---------------- */
+router.post("/", async (req, res) => {
+  try {
+    const enquiry = new Enquiry(req.body);
+    await enquiry.save();
 
-    try {
-      // Save enquiry to DB
-      const enquiry = new Enquiry(req.body);
-      const savedEnquiry = await enquiry.save();
+    res.json({ message: "Enquiry submitted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
-      // Send email (NON-BLOCKING)
-      try {
-        await transporter.sendMail({
-          from: `"Shraddha Scholars" <${process.env.EMAIL_USER}>`,
-          to: "1107shraddha@gmail.com",
-          subject: "📩 New Student Enquiry – Shraddha Scholars",
-          html: `
-            <h2>New Enquiry Received</h2>
-            <p><strong>Name:</strong> ${savedEnquiry.name}</p>
-            <p><strong>Class:</strong> ${savedEnquiry.class}</p>
-            <p><strong>School:</strong> ${savedEnquiry.school || "-"}</p>
-            <p><strong>Phone:</strong> ${savedEnquiry.phone}</p>
-            <p><strong>Course:</strong> ${savedEnquiry.course || "-"}</p>
-            <p><strong>Date:</strong> ${new Date(savedEnquiry.createdAt).toLocaleString()}</p>
-          `,
-        });
+/* ---------------- GET (admin) ---------------- */
+router.get("/", async (req, res) => {
+  if (req.headers["x-admin-password"] !== process.env.ADMIN_PASSWORD) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
 
-        console.log("✅ Email notification sent");
-      } catch (mailErr) {
-        console.log("⚠️ Email failed but enquiry saved:", mailErr.message);
-      }
+  const enquiries = await Enquiry.find().sort({ createdAt: -1 });
+  res.json(enquiries);
+});
 
-      return res.json({
-        message: "Enquiry submitted successfully",
-      });
-    } catch (err) {
-      console.error("❌ Enquiry save error:", err.message);
-      return res.status(500).json({
-        error: "Failed to submit enquiry",
-      });
-    }
+/* ---------------- UPDATE status ---------------- */
+router.put("/:id/status", async (req, res) => {
+  if (req.headers["x-admin-password"] !== process.env.ADMIN_PASSWORD) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  await Enquiry.findByIdAndUpdate(req.params.id, {
+    status: req.body.status
   });
 
-  // ============================
-  // GET – admin only
-  // ============================
-  router.get("/", async (req, res) => {
-    const adminPass = req.headers["x-admin-password"];
+  res.json({ message: "Status updated" });
+});
 
-    // DEBUG (remove later if you want)
-    console.log("HEADER PASS:", adminPass);
-    console.log("ENV PASS:", process.env.ADMIN_PASSWORD);
+/* ---------------- DELETE enquiry ---------------- */
+router.delete("/:id", async (req, res) => {
+  if (req.headers["x-admin-password"] !== process.env.ADMIN_PASSWORD) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
 
-    if (adminPass !== process.env.ADMIN_PASSWORD) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+  await Enquiry.findByIdAndDelete(req.params.id);
+  res.json({ message: "Deleted" });
+});
 
-    try {
-      const enquiries = await Enquiry.find().sort({ createdAt: -1 });
-      return res.json(enquiries);
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  });
-
-  return router;
-}
+export default router;
