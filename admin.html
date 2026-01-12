@@ -16,9 +16,9 @@
       margin-bottom: 1rem;
     }
 
-    input, button {
+    input, button, select {
       padding: 10px;
-      margin: 5px 0;
+      margin: 5px 5px 5px 0;
       font-size: 1rem;
     }
 
@@ -57,26 +57,71 @@
       margin-top: 10px;
       font-weight: bold;
     }
+
+    .contacted {
+      color: green;
+      font-weight: bold;
+    }
+
+    .not-contacted {
+      color: red;
+      font-weight: bold;
+    }
+
+    /* Login Card */
+    #loginBox {
+      max-width: 400px;
+      margin: 120px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    #dashboard {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
 
-  <h2>Admin Dashboard – Shraddha Scholars</h2>
+<!-- LOGIN -->
+<div id="loginBox">
+  <h2>Shraddha Scholars</h2>
+  <p style="color:#555;margin-bottom:20px;">Admin Login</p>
 
   <input
     type="password"
     id="adminPass"
     placeholder="Enter admin password"
-  />
+    style="width:100%;"
+    onkeydown="if(event.key==='Enter') loadData()"
+  >
 
-  <br>
-
-  <button onclick="loadData()">Load Enquiries</button>
+  <button onclick="loadData()" style="width:100%;margin-top:10px;">
+    Login
+  </button>
 
   <p class="error" id="errorMsg"></p>
+</div>
 
-  <table id="dataTable" style="display:none;">
+<!-- DASHBOARD -->
+<div id="dashboard">
+
+  <h2>Admin Dashboard – Shraddha Scholars</h2>
+
+  <input type="text" id="searchBox" placeholder="Search name / phone">
+  <select id="courseFilter">
+    <option value="">All Courses</option>
+    <option value="IOQM">IOQM</option>
+    <option value="NMTC">NMTC</option>
+    <option value="CBSE">CBSE</option>
+    <option value="ICSE">ICSE</option>
+  </select>
+
+  <table id="dataTable">
     <thead>
       <tr>
         <th>Name</th>
@@ -84,66 +129,104 @@
         <th>School</th>
         <th>Phone</th>
         <th>Course</th>
+        <th>Status</th>
+        <th>Delete</th>
         <th>Date</th>
       </tr>
     </thead>
-
     <tbody id="tableBody"></tbody>
   </table>
 
-  <script>
-    async function loadData() {
-      const pass = document.getElementById("adminPass").value;
-      const errorMsg = document.getElementById("errorMsg");
-      const table = document.getElementById("dataTable");
-      const body = document.getElementById("tableBody");
+</div>
 
-      errorMsg.innerText = "";
-      body.innerHTML = "";
-      table.style.display = "none";
+<script>
+  let allData = [];
+  let adminPassword = "";
 
-      if (!pass) {
-        errorMsg.innerText = "Please enter admin password.";
-        return;
-      }
+  async function loadData() {
+    adminPassword = document.getElementById("adminPass").value;
+    const errorMsg = document.getElementById("errorMsg");
 
-      try {
-        const res = await fetch(
-          "https://shraddha-scholars.onrender.com/api/enquiry",
-          {
-            method: "GET",
-            headers: {
-              "x-admin-password": pass
-            }
-          }
-        );
+    errorMsg.innerText = "";
 
-        if (!res.ok) {
-          throw new Error("Unauthorized");
-        }
-
-        const data = await res.json();
-
-        table.style.display = "table";
-
-        data.forEach(e => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${e.name}</td>
-            <td>${e.class}</td>
-            <td>${e.school || "-"}</td>
-            <td>${e.phone}</td>
-            <td>${e.course || "-"}</td>
-            <td>${new Date(e.createdAt).toLocaleString()}</td>
-          `;
-          body.appendChild(row);
-        });
-
-      } catch (err) {
-        errorMsg.innerText = "Wrong password or server error.";
-      }
+    if (!adminPassword) {
+      errorMsg.innerText = "Please enter admin password.";
+      return;
     }
-  </script>
+
+    try {
+      const res = await fetch("https://shraddha-scholars.onrender.com/api/enquiry", {
+        headers: { "x-admin-password": adminPassword }
+      });
+
+      if (!res.ok) throw new Error("Unauthorized");
+
+      allData = await res.json();
+
+      document.getElementById("loginBox").style.display = "none";
+      document.getElementById("dashboard").style.display = "block";
+
+      renderTable();
+
+    } catch (err) {
+      errorMsg.innerText = "Wrong password or server error.";
+    }
+  }
+
+  function renderTable() {
+    const body = document.getElementById("tableBody");
+    const search = document.getElementById("searchBox").value.toLowerCase();
+    const filter = document.getElementById("courseFilter").value;
+
+    body.innerHTML = "";
+
+    allData
+      .filter(e =>
+        (!filter || e.course === filter) &&
+        (e.name.toLowerCase().includes(search) || e.phone.includes(search))
+      )
+      .forEach(e => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${e.name}</td>
+          <td>${e.class}</td>
+          <td>${e.school || "-"}</td>
+          <td>${e.phone}</td>
+          <td>${e.course || "-"}</td>
+          <td>
+            <button onclick="toggleStatus(this)">
+              Not Contacted
+            </button>
+          </td>
+          <td>
+            <button onclick="deleteRow(this)">Delete</button>
+          </td>
+          <td>${new Date(e.createdAt).toLocaleString()}</td>
+        `;
+
+        body.appendChild(row);
+      });
+  }
+
+  function toggleStatus(btn) {
+    if (btn.innerText === "Not Contacted") {
+      btn.innerText = "Contacted";
+      btn.className = "contacted";
+    } else {
+      btn.innerText = "Not Contacted";
+      btn.className = "not-contacted";
+    }
+  }
+
+  function deleteRow(btn) {
+    if (!confirm("Delete this enquiry?")) return;
+    btn.closest("tr").remove();
+  }
+
+  document.getElementById("searchBox").addEventListener("input", renderTable);
+  document.getElementById("courseFilter").addEventListener("change", renderTable);
+</script>
 
 </body>
 </html>
