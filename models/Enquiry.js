@@ -1,15 +1,16 @@
-import mongoose from "mongoose";
-
-const enquirySchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  class: { type: String, required: true },
-  school: String,
-  phone: { type: String, required: true },
-  course: String,
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-});
+const enquirySchema = new mongoose.Schema(
+  {
+    name: String,
+    class: String,
+    school: String,
+    phone: String,
+    course: String,
+    status: {
+      type: String,
+      default: "new" // new | contacted
+    }
+  },
+  { timestamps: true }
+);
 
 export default mongoose.model("Enquiry", enquirySchema);
